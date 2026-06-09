@@ -1,34 +1,8 @@
 export const navbarStyles = {
-  header:
-    "fixed top-0 left-0 z-50 w-full transition-all duration-500",
-
-  container:
-    "mx-auto flex max-w-7xl items-center justify-between px-8 py-5",
-
-  logo:
-    "text-xl font-bold text-white",
-
-  desktopNav:
-    "hidden gap-8 text-white md:flex",
-
-  desktopLink:
-    "transition duration-300 hover:text-[#d4b483]",
-
-  languageSwitcher:
-    "hidden text-white md:block",
-
-  mobileMenuButton:
-    "text-3xl text-white md:hidden",
-
-  mobileOverlay:
-    "fixed inset-0 z-[999] flex flex-col items-center justify-center bg-[#2f241c]",
-
-  mobileCloseButton:
-    "absolute right-8 top-8 text-4xl text-white",
-
-  mobileLinksContainer:
-    "flex flex-col items-center gap-8",
-
-  mobileLink:
-    "text-2xl font-semibold text-white transition duration-300 hover:text-[#d4b483]",
+  header: "fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-museum-cream/90 backdrop-blur-md border-b border-museum-gold/20 shadow-sm",
+  container: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between",
+  logo: "font-serif text-xl md:text-2xl font-bold text-museum-red tracking-wide hover:text-museum-gold transition-colors cursor-pointer",
+  nav: "hidden md:flex space-x-8",
+  link: "font-sans text-sm font-medium text-museum-dark hover:text-museum-red transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-museum-gold hover:after:w-full after:transition-all after:duration-300",
+  mobileMenuBtn: "md:hidden p-2 rounded-md text-museum-dark hover:text-museum-red focus:outline-none",
 };

@@ -1,8 +1,13 @@
-export const navLinks = [
-  { href: "/", label: "Acasă" },
-  { href: "/about", label: "Despre" },
-  { href: "/activities", label: "Activități" },
-  { href: "/gallery", label: "Galerie" },
-  { href: "/virtual-tour", label: "Tur Virtual" },
-  { href: "/contact", label: "Contact" },
+export interface NavItem {
+  label: string;
+  href: string;
+}
+
+export const NAV_ITEMS: NavItem[] = [
+  { label: "Acasă", href: "/" },
+  { label: "Despre Muzeu", href: "/about" },
+  { label: "Colecții", href: "/gallery" },
+  { label: "Activități", href: "/activities" },
+  { label: "Tur Virtual", href: "/virtual-tour" },
+  { label: "Contact", href: "/contact" },
 ];

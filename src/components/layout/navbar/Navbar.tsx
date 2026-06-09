@@ -1,96 +1,81 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-
-import { navLinks } from "./navbar.constants";
-import { navbarStyles } from "./navbar.styles";
+import { usePathname } from "next/navigation";
+import { NAV_ITEMS } from "./navbar.constants";
+import { navbarStyles } from "./navbar.style";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
-    <>
-      <header
-        className={`${navbarStyles.header} ${
-          scrolled
-            ? "bg-[#2f241c]/95 backdrop-blur-md shadow-lg"
-            : "bg-transparent"
-        }`}
-      >
-        <div className={navbarStyles.container}>
-          <Link href="/" className={navbarStyles.logo}>
-            Muzeul Someș-Guruslău
-          </Link>
+    <header className={navbarStyles.header}>
+      <div className={navbarStyles.container}>
+        {/* LOGO */}
+        <Link href="/" className={navbarStyles.logo}>
+          Muzeul Someș-Guruslău
+        </Link>
 
-          <nav className={navbarStyles.desktopNav}>
-            {navLinks.map((link) => (
+        {/* DESKTOP NAVIGATION */}
+        <nav className={navbarStyles.nav}>
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href;
+            return (
               <Link
-                key={link.href}
-                href={link.href}
-                className={navbarStyles.desktopLink}
+                key={item.href}
+                href={item.href}
+                className={`${navbarStyles.link} ${
+                  isActive ? "text-[#8B0000] font-semibold after:w-full" : ""
+                }`}
               >
-                {link.label}
+                {item.label}
               </Link>
-            ))}
-          </nav>
+            );
+          })}
+        </nav>
 
-          <div className={navbarStyles.languageSwitcher}>
-            🇷🇴 RO | 🇬🇧 EN
-          </div>
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={navbarStyles.mobileMenuBtn}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? (
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
+      </div>
 
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className={navbarStyles.mobileMenuButton}
-          >
-            ☰
-          </button>
+      {/* MOBILE DROPDOWN MENU */}
+      {isOpen && (
+        <div className="md:hidden bg-[#F5F0E6] border-b border-[#D4AF37]/20 px-4 pt-2 pb-4 space-y-1">
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  isActive
+                    ? "bg-[#8B0000]/10 text-[#8B0000] font-semibold"
+                    : "text-[#2F2F2F] hover:bg-[#8B0000]/5 hover:text-[#8B0000]"
+                } transition-colors`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
-      </header>
-
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -40 }}
-            transition={{ duration: 0.3 }}
-            className={navbarStyles.mobileOverlay}
-          >
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className={navbarStyles.mobileCloseButton}
-            >
-              ✕
-            </button>
-
-            <div className={navbarStyles.mobileLinksContainer}>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={navbarStyles.mobileLink}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      )}
+    </header>
   );
 }
